@@ -1,0 +1,70 @@
+#added-by-Steve:
+1.编译顺序
+faac->x264->ffmpeg
+2. faac的编译
+faac必须使用交叉编译工具链来编译, 交叉编译工具链可以通过下面的方法导出.
+当前目录下toolchain.sh是用于导出NDK中交叉编译工具链的shell脚本.
+具体导出适用于什么平台什么CPU架构, 可以在脚本中根据$ndk/build/tools/make-standalone-toolchain.sh中提供的配置来定制.
+注: make-standalone-toolchain.sh --help
+导出工具链后, 在faac源码根目录配置build-xxx.sh, 指定工具链的位置和生成faac链接库及头文件的路径.
+注: 当前make install路径为faac源码同级目录的output/faac/xxx
+3. x264的编译
+x264源码目录下有编译脚本。
+针对什么平台什么CPU架构可以自己配置。
+x264提供两种编译方法, 交叉编译工具链和NDK直接编译。
+4. ffmpeg的编译
+目前ffmpeg编码H264封装MP4时引用了X264库.
+ffmpeg-2.5.3已包含AAC的编解码器, 但没有H264相关的编解码器, 所以必须引入H264的库,以实现MP4封装。
+faac的库引入是为了备用, 后续无用可移除.
+5. 所有库的install路径均指向open-media/output.
+6. Android上引用库的例子在examples/android下.
+
+
+7.
+open-media
+|examples
+|  |android
+|
+|faac-1.28
+|
+|ffmepg-2.5.3
+|
+|output
+|
+|readme
+|
+|stable-bakup
+|  |faac-1.28.tar.gz
+|  |ffmpeg-2.5.3.tar.gz
+|  |toolchain.sh
+|  |x264-0.135.x.tar.gz
+|
+|toolchain.sh
+|
+|x264
+
+
+output
+|faac
+|  |android
+|  |  |armeabi-v7a
+|  |  |  |bin
+|  |  |  |include
+|  |  |  |lib
+|  |  |  |share
+|
+|x264
+|  |android
+|  |  |armeabi-v7a
+|  |  |  |bin
+|  |  |  |include
+|  |  |  |lib
+|
+|ffmpeg
+|  |android
+|  |  |armeabi-v7a
+|  |  |  |include
+|  |  |  |lib
+
+
+
